@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Patient Registration</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    .form-group {
+      margin-bottom: 15px;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"] {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    
+    button {
+      background-color: #4285F4;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    
+    button:hover {
+      background-color: #3367D6;
+    }
+    
+    .success-message {
+      color: green;
+      margin-top: 15px;
+      padding: 10px;
+      background-color: #e8f5e9;
+      border-radius: 4px;
+      display: none;
+    }
+    
+    .error-message {
+      color: red;
+      margin-top: 15px;
+      padding: 10px;
+      background-color: #ffebee;
+      border-radius: 4px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>Patient Registration</h1>
+  
+  <div id="firebaseui-auth-container"></div>
+  
+  <form id="patientForm" style="display: none;">
+    <div class="form-group">
+      <label for="name">Full Name:</label>
+      <input type="text" id="name" required>
+    </div>
+    
+    <div class="form-group">
+      <label for="phoneNumber">Phone Number:</label>
+      <input type="tel" id="phoneNumber" pattern="[0-9]{10}" required>
+      <small>10 digits only, no spaces or dashes</small>
+    </div>
+    
+    <div class="form-group">
+      <label for="guardianPhoneNumber">Guardian Phone Number:</label>
+      <input type="tel" id="guardianPhoneNumber" pattern="[0-9]{10}" required>
+      <small>10 digits only, no spaces or dashes</small>
+    </div>
+    
+    <div class="form-group">
+      <label for="email">Email:</label>
+      <input type="email" id="email" required>
+    </div>
+    
+    <button type="submit">Register Patient</button>
+  </form>
+  
+  <div id="successMessage" class="success-message">
+    Patient registered successfully!
+  </div>
+  
+  <div id="errorMessage" class="error-message">
+    Error registering patient. Please try again.
+  </div>
+  
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/ui/6.0.1/firebase-ui-auth.js"></script>
+  <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/6.0.1/firebase-ui-auth.css" />
+  
+  <script>
+    // Initialize Firebase with your config
+    const firebaseConfig = {
+      apiKey: "AIzaSyDKkJc0SbCronxQP6KZcCLJLzGSF-qFXDs",
+      authDomain: "wellbeam-35e71.firebaseapp.com",
+      projectId: "wellbeam-35e71",
+      storageBucket: "wellbeam-35e71.appspot.com",
+      messagingSenderId: "789976919078",
+      appId: "1:789976919078:web:21a48c02c0f234cc05cae7"
+    };
+    
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    
+    // Initialize auth and firestore
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+    
+    // Initialize Firebase UI
+    const ui = new firebaseui.auth.AuthUI(auth);
+    
+    // Firebase UI config
+    const uiConfig = {
+      callbacks: {
+        signInSuccessWithAuthResult: function(authResult, redirectUrl) {
+          // User successfully signed in
+          const user = authResult.user;
+          document.getElementById('email').value = user.email;
+          document.getElementById('patientForm').style.display = 'block';
+          return false;
+        },
+        uiShown: function() {
+          // The widget is rendered
+        }
+      },
+      signInFlow: 'popup',
+      signInOptions: [
+        firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+        firebase.auth.EmailAuthProvider.PROVIDER_ID
+      ]
+    };
+    
+    // Start Firebase UI
+    ui.start('#firebaseui-auth-container', uiConfig);
+    
+    // Handle form submission
+    document.getElementById('patientForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const name = document.getElementById('name').value;
+      const phoneNumber = document.getElementById('phoneNumber').value;
+      const guardianPhoneNumber = document.getElementById('guardianPhoneNumber').value;
+      const email = document.getElementById('email').value;
+      
+      // Generate a unique patientId
+      const patientId = 'P' + Date.now().toString().slice(-8);
+      localStorage.setItem('patientId', patientId);
+      localStorage.setItem('patientName', name);
+      localStorage.setItem('patientPhoneNumber', phoneNumber);
+      localStorage.setItem('patientGuardianPhoneNumber', guardianPhoneNumber);
+      localStorage.setItem('patientEmail', email);
+      
+      // Add patient to Firestore
+      db.collection('patients').add({
+        name: name,
+        patientId: patientId,
+        phoneNumber: phoneNumber,
+        guardianPhoneNumber: guardianPhoneNumber,
+        email: email,
+        uid: auth.currentUser.uid,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      })
+      .then(function(docRef) {
+        console.log("Patient added with ID: ", docRef.id);
+        document.getElementById('successMessage').style.display = 'block';
+        document.getElementById('errorMessage').style.display = 'none';
+        document.getElementById('patientForm').reset();
+        
+        // Redirect after successful registration (optional)
+        setTimeout(function() {
+          window.location.href = "http://127.0.0.1:5000";
+        }, 2000);
+      })
+      .catch(function(error) {
+        console.error("Error adding patient: ", error);
+        document.getElementById('errorMessage').style.display = 'block';
+        document.getElementById('successMessage').style.display = 'none';
+        document.getElementById('errorMessage').textContent = 
+          "Error registering patient: " + error.message;
+      });
+    });
+    
+    // Check if user is signed in
+    auth.onAuthStateChanged(function(user) {
+      if (user) {
+        // User is signed in
+        document.getElementById('firebaseui-auth-container').style.display = 'none';
+        document.getElementById('patientForm').style.display = 'block';
+        document.getElementById('email').value = user.email || '';
+      } else {
+        // User is signed out
+        document.getElementById('firebaseui-auth-container').style.display = 'block';
+        document.getElementById('patientForm').style.display = 'none';
+      }
+    });
+  </script>
+</body>
+</html>

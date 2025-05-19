@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WellBeam - Services</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #eef2f3, #8ec5fc);
+        color: #1f1f1f;
+        line-height: 1.6;
+        overflow-x: hidden;
+      }
+
+      header {
+        background: linear-gradient(to right, #1e3c72, #2a5298);
+        color: #fff;
+        padding: 20px 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+      }
+
+      header h1 {
+        font-size: 1.8rem;
+        letter-spacing: 1px;
+      }
+
+      nav ul {
+        list-style: none;
+        display: flex;
+        gap: 30px;
+      }
+
+      nav a {
+        text-decoration: none;
+        color: #e0f7fa;
+        font-weight: 500;
+        position: relative;
+        transition: color 0.3s;
+      }
+
+      nav a::after {
+        content: "";
+        position: absolute;
+        bottom: -5px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: #00c6ff;
+        transition: width 0.3s;
+      }
+
+      nav a:hover::after {
+        width: 100%;
+      }
+
+      nav a:hover {
+        color: #ffffff;
+      }
+
+      .hero {
+        text-align: center;
+        padding: 60px 20px;
+        animation: fadeIn 1s ease-out;
+      }
+
+      .hero h2 {
+        font-size: 2.8rem;
+        margin-bottom: 20px;
+        color: #1e3c72;
+      }
+
+      .hero p {
+        max-width: 800px;
+        margin: 0 auto;
+        font-size: 1.1rem;
+        color: #333;
+      }
+
+      .services {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 30px;
+        padding: 60px 40px;
+        animation: slideUp 1.2s ease-out;
+      }
+
+      .service {
+        background: #ffffffaa;
+        border-radius: 12px;
+        padding: 30px;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+      }
+
+      .service:hover {
+        transform: translateY(-10px);
+      }
+
+      .service h3 {
+        color: #2a5298;
+        margin-bottom: 10px;
+      }
+
+      .service p {
+        font-size: 0.95rem;
+      }
+
+      footer {
+        background: #1e3c72;
+        color: #eee;
+        padding: 20px;
+        text-align: center;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes slideUp {
+        0% {
+          opacity: 0;
+          transform: translateY(50px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @media (max-width: 600px) {
+        header {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+        nav ul {
+          flex-direction: column;
+          gap: 10px;
+          margin-top: 10px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>WellBeam</h1>
+      <nav>
+        <ul>
+          <li><a href="Main.html">Home</a></li>
+          <li><a href="About.html">About</a></li>
+          <li><a href="Services.html">Services</a></li>
+          <li><a href="Contact.html">Contact</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <h2>Our Services</h2>
+      <p>
+        WellBeam bridges the gap between technology and healthcare to provide
+        seamless, AI-driven solutions that enhance diagnostics, track patient
+        progress, and improve overall wellness experiences.
+      </p>
+    </section>
+
+    <section class="services">
+      <div class="service">
+        <h3>AI Health Analysis</h3>
+        <p>
+          Leverages real-time AI to analyze symptoms, monitor trends, and
+          provide insights tailored to the user’s health profile.
+        </p>
+      </div>
+      <div class="service">
+        <h3>Doctor Dashboard</h3>
+        <p>
+          Enables professionals to access real-time health reports of patients,
+          aiding faster decisions and personalized treatment.
+        </p>
+      </div>
+      <div class="service">
+        <h3>Secure Login & Reports</h3>
+        <p>
+          Both patients and doctors access personalized portals with login
+          protection, secure health history, and downloadable reports.
+        </p>
+      </div>
+      <div class="service">
+        <h3>Progress Tracking</h3>
+        <p>
+          Track vitals and recovery over time with interactive charts and smart
+          reminders, motivating users to stay on course.
+        </p>
+      </div>
+      <div class="service">
+        <h3>24x7 Assistance</h3>
+        <p>
+          Support team and AI chatbot are available round-the-clock to resolve
+          queries and guide users to the right service or professional.
+        </p>
+      </div>
+      <div class="service">
+        <h3>Future Integrations</h3>
+        <p>
+          WellBeam will soon support wearable device integration, video
+          consultations, and multilingual support for wider accessibility.
+        </p>
+      </div>
+    </section>
+
+    <footer>
+      <p>&copy; 2025 WellBeam. All rights reserved.</p>
+    </footer>
+  </body>
+</html>

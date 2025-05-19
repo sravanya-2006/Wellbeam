@@ -1,0 +1,275 @@
+@import url("https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Lexend", sans-serif;
+  background-image: url("main.jpeg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: #111222;
+  line-height: 1.6;
+  transition: background-color 0.3s ease;
+}
+
+/* ===================== Navbar ===================== */
+nav {
+  background-color: rgba(34, 84, 95, 0.463);
+  backdrop-filter: blur(40px);
+  -webkit-backdrop-filter: blur(40px);
+  padding: 20px 30px;
+  color: #ffffff;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  transition: all 0.4s ease-in-out;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  border-radius: 3%;
+}
+
+nav .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+nav h1 {
+  font-size: 2rem;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+nav ul li {
+  margin: 0 15px;
+}
+
+nav a {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+nav a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -5px;
+  width: 0%;
+  height: 2px;
+  background: #1b1e1f8a;
+  transition: width 0.3s ease;
+}
+
+nav a:hover::after {
+  width: 100%;
+}
+
+nav a:hover {
+  color: #ffffff;
+  text-shadow: 0 0 8px #4f9eb8a7;
+  transform: scale(1.05);
+}
+
+.logo img {
+  height: 50px; /* Adjust based on your logo */
+  transition: transform 0.3s ease;
+  border-radius: 60%;
+}
+
+.logo img:hover {
+  transform: scale(1.05);
+}
+
+/* Underline slide effect on hover */
+nav a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 0%;
+  height: 2px;
+  background-color: #0077b6;
+  transition: width 0.3s ease;
+}
+nav a:hover::after {
+  width: 100%;
+}
+
+/* ===================== Hero Section ===================== */
+.hero {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  height: 90vh;
+  padding: 20px;
+  margin-top: 20px;
+  backdrop-filter: blur(6px);
+  animation: fadeIn 2s ease-in-out;
+  background-color: #45616a48;
+}
+
+.hero .container {
+  max-width: 900px;
+  margin: 0 auto;
+  background-color: rgba(255, 255, 255, 0.05);
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(10px);
+}
+
+.hero h2 {
+  font-size: 3rem;
+  margin-bottom: 20px;
+  color: #ffffff;
+  animation: slideUp 1s ease-in-out;
+}
+
+.hero p {
+  font-size: 1.2rem;
+  margin-bottom: 40px;
+  color: #ddd;
+  animation: fadeIn 2.2s ease-in-out;
+}
+
+/* ===================== Buttons ===================== */
+.button-container {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  animation: fadeIn 2.5s ease-in-out;
+}
+
+.btn {
+  padding: 15px 30px;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  transform: scale(1);
+  /* box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.15),
+    -8px -8px 16px rgba(255, 255, 255, 0.5); */
+}
+
+/* User Login Button */
+.btn.user-login {
+  background: linear-gradient(135deg, #00c6ff, #0072ff);
+}
+.btn.user-login:hover {
+  background: linear-gradient(135deg, #0072ff, #00c6ff);
+  box-shadow: inset 6px 6px 10px rgba(0, 0, 0, 0.15),
+    inset -6px -6px 10px rgba(255, 255, 255, 0.5);
+  transform: scale(1.05);
+}
+
+/* Doctor Analysis Button */
+.btn.doctor-analysis {
+  background: linear-gradient(135deg, #00c6ff, #0072ff);
+}
+.btn.doctor-analysis:hover {
+  background: linear-gradient(135deg, #0072ff, #00c6ff);
+  transform: scale(1.05);
+  box-shadow: inset 6px 6px 10px rgba(0, 0, 0, 0.15),
+    inset -6px -6px 10px rgba(255, 255, 255, 0.5);
+}
+
+/* ===================== Footer ===================== */
+footer {
+  background-color: rgba(10, 25, 47, 0.9);
+  color: #e0f7ff;
+  padding: 20px 0;
+  text-align: center;
+  font-size: 18px;
+  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.1);
+  letter-spacing: 0.5px;
+}
+
+footer a {
+  color: #80dfff;
+  text-decoration: underline;
+  transition: color 0.3s ease;
+}
+
+footer a:hover {
+  color: #ffffff;
+}
+
+/* ===================== Animations ===================== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUp {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+}
+
+/* ===================== Responsive ===================== */
+@media (max-width: 768px) {
+  nav .container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  nav ul {
+    flex-direction: column;
+    margin-top: 10px;
+  }
+
+  nav ul li {
+    margin: 10px 0;
+  }
+
+  .hero h2 {
+    font-size: 2rem;
+  }
+
+  .hero p {
+    font-size: 1rem;
+  }
+
+  .btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  .button-container {
+    flex-direction: column;
+    gap: 15px;
+  }
+}

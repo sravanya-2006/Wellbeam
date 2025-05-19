@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>WellBeam - Sign In</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background-color: #f0f4f8;
+      color: #333;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      flex-direction: column;
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .container {
+      text-align: center;
+      margin-bottom: 30px;
+      animation: fadeInDown 1.2s ease-in-out;
+      width: 100%;
+    }
+
+    @keyframes fadeInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .logo {
+      font-size: 2.8rem;
+      margin-top: 70px;
+      font-weight: 600;
+      color: #4e73df;
+      margin-bottom: 0.3em;
+      letter-spacing: 1px;
+    }
+
+    h2 {
+      color: #555;
+      font-weight: 300;
+      font-size: 1.5rem;
+    }
+
+    #loading {
+      display: none;
+      font-size: 1rem;
+      color: #555;
+      margin-bottom: 20px;
+      animation: fadeIn 1s ease-in-out;
+      background: #f0f4f8;
+      padding: 15px 25px;
+      border-radius: 50px;
+      box-shadow: 5px 5px 10px rgba(163, 177, 198, 0.5),
+                 -5px -5px 10px rgba(255, 255, 255, 0.8);
+    }
+
+    .spinner {
+      border: 4px solid rgba(163, 177, 198, 0.3);
+      border-top: 4px solid #4e73df;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      animation: spin 1s linear infinite;
+      display: inline-block;
+      margin-right: 10px;
+      vertical-align: middle;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    #firebaseui-auth-container {
+      animation: fadeIn 1.4s ease-in-out;
+      width: 450px; /* Increased width */
+    }
+
+    form {
+      background: #f0f4f8;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 10px 10px 20px rgba(163, 177, 198, 0.6),
+                 -10px -10px 20px rgba(255, 255, 255, 0.8);
+      width: 450px; /* Increased width */
+      animation: fadeIn 1.4s ease-in-out;
+    }
+
+    h3 {
+      color: #4e73df;
+      font-weight: 500;
+      margin-bottom: 10px;
+      text-align: center;
+      font-size: 1.5rem;
+    }
+
+    form p {
+      color: #666;
+      font-size: 0.9rem;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+      text-align: left;
+    }
+
+    label {
+      display: block;
+      font-weight: 500;
+      margin-bottom: 8px;
+      color: #555;
+      font-size: 0.95rem;
+    }
+
+    small {
+      color: #777;
+      font-size: 0.8rem;
+      display: block;
+      margin-top: 5px;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px 15px;
+      border-radius: 50px;
+      border: none;
+      background: #f0f4f8;
+      box-shadow: inset 5px 5px 10px rgba(163, 177, 198, 0.5),
+                  inset -5px -5px 10px rgba(255, 255, 255, 0.8);
+      transition: all 0.3s ease;
+      color: #444;
+      font-size: 0.95rem;
+    }
+
+    input:focus {
+      outline: none;
+      box-shadow: inset 4px 4px 8px rgba(163, 177, 198, 0.5),
+                  inset -4px -4px 8px rgba(255, 255, 255, 0.8),
+                  0 0 0 3px rgba(78, 115, 223, 0.1);
+    }
+
+    button {
+      width: 100%;
+      background: #f0f4f8;
+      color: #4e73df;
+      padding: 15px;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 1rem;
+      letter-spacing: 1px;
+      box-shadow: 8px 8px 15px rgba(163, 177, 198, 0.6),
+                 -8px -8px 15px rgba(255, 255, 255, 0.8);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      box-shadow: 6px 6px 10px rgba(163, 177, 198, 0.5),
+                 -6px -6px 10px rgba(255, 255, 255, 0.7);
+      transform: translateY(-3px);
+    }
+
+    button:active {
+      box-shadow: inset 5px 5px 10px rgba(163, 177, 198, 0.5),
+                  inset -5px -5px 10px rgba(255, 255, 255, 0.7);
+      transform: translateY(0);
+    }
+
+    button::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.4),
+        transparent
+      );
+      transition: 0.5s;
+      z-index: -1;
+    }
+
+    button:hover::before {
+      left: 100%;
+    }
+
+    .success-message, .error-message {
+      text-align: center;
+      font-weight: 500;
+      margin-top: 20px;
+      padding: 15px 25px;
+      border-radius: 50px;
+      display: none;
+      animation: fadeIn 0.8s ease-in-out;
+      box-shadow: 5px 5px 10px rgba(163, 177, 198, 0.5),
+                 -5px -5px 10px rgba(255, 255, 255, 0.8);
+      width: 450px; /* Increased width */
+    }
+
+    .success-message {
+      color: #4e73df;
+      background: #f0f4f8;
+    }
+
+    .error-message {
+      color: #e74a3b;
+      background: #f0f4f8;
+    }
+
+    /* Firebase UI customization */
+    .firebaseui-container {
+      background: #f0f4f8 !important;
+      box-shadow: 10px 10px 20px rgba(163, 177, 198, 0.6),
+                 -10px -10px 20px rgba(255, 255, 255, 0.8) !important;
+      padding: 20px !important;
+      border-radius: 20px !important;
+      max-width: 450px !important; /* Increased width */
+    }
+
+    .firebaseui-card-content {
+      padding: 0 !important;
+    }
+
+    .firebaseui-title {
+      color: #4e73df !important;
+      font-family: 'Poppins', sans-serif !important;
+      font-weight: 500 !important;
+      font-size: 1.5rem !important;
+    }
+
+    .firebaseui-subtitle {
+      color: #555 !important;
+      font-family: 'Poppins', sans-serif !important;
+    }
+
+    .firebaseui-button {
+      box-shadow: 8px 8px 15px rgba(163, 177, 198, 0.6),
+                 -8px -8px 15px rgba(255, 255, 255, 0.8) !important;
+      border-radius: 50px !important;
+      font-family: 'Poppins', sans-serif !important;
+    }
+
+    .firebaseui-input {
+      border-radius: 50px !important;
+      box-shadow: inset 5px 5px 10px rgba(163, 177, 198, 0.5),
+                  inset -5px -5px 10px rgba(255, 255, 255, 0.8) !important;
+      border: none !important;
+      padding: 12px 15px !important;
+    }
+
+    .mdl-button--raised.mdl-button--colored {
+      background: #f0f4f8 !important;
+      color: #4e73df !important;
+      box-shadow: 8px 8px 15px rgba(163, 177, 198, 0.6),
+                 -8px -8px 15px rgba(255, 255, 255, 0.8) !important;
+    }
+
+    .mdl-button--raised.mdl-button--colored:hover {
+      background: #f0f4f8 !important;
+      box-shadow: 6px 6px 10px rgba(163, 177, 198, 0.5),
+                 -6px -6px 10px rgba(255, 255, 255, 0.7) !important;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="logo">WellBeam</div>
+    <h2>Welcome to WellBeam</h2>
+  </div>
+
+  <div id="loading">
+    <div class="spinner"></div> Checking your account...
+  </div>
+
+  <div id="firebaseui-auth-container"></div>
+
+  <form id="patientForm" style="display: none;">
+    <h3>Complete Your Profile</h3>
+    <p>This appears to be your first time using WellBeam. Please complete your profile to continue.</p>
+
+    <div class="form-group">
+      <label for="name">Full Name:</label>
+      <input type="text" id="name" required />
+    </div>
+
+    <div class="form-group">
+      <label for="phoneNumber">Phone Number:</label>
+      <input type="tel" id="phoneNumber" pattern="[0-9]{10}" required />
+      <small>10 digits only</small>
+    </div>
+
+    <div class="form-group">
+      <label for="guardianPhoneNumber">Guardian Phone Number:</label>
+      <input type="tel" id="guardianPhoneNumber" pattern="[0-9]{10}" required />
+      <small>10 digits only</small>
+    </div>
+
+    <div class="form-group">
+      <label for="email">Email:</label>
+      <input type="email" id="email" required />
+    </div>
+
+    <button type="submit">Complete Registration</button>
+  </form>
+
+  <div id="successMessage" class="success-message">✅ Registration successful! Redirecting...</div>
+  <div id="errorMessage" class="error-message">❌ Error registering. Please try again.</div>
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/ui/6.0.1/firebase-ui-auth.js"></script>
+  <link rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/6.0.1/firebase-ui-auth.css"/>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDKkJc0SbCronxQP6KZcCLJLzGSF-qFXDs",
+      authDomain: "wellbeam-35e71.firebaseapp.com",
+      projectId: "wellbeam-35e71",
+      storageBucket: "wellbeam-35e71.appspot.com",
+      messagingSenderId: "789976919078",
+      appId: "1:789976919078:web:21a48c02c0f234cc05cae7"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    let ui = new firebaseui.auth.AuthUI(auth);
+    let uiStarted = false;
+
+    // Add some subtle animations
+    document.addEventListener('DOMContentLoaded', function() {
+      // Add hover effect to form elements
+      const inputs = document.querySelectorAll('input');
+      inputs.forEach(input => {
+        input.addEventListener('focus', function() {
+          this.style.transform = 'scale(1.01)';
+        });
+        
+        input.addEventListener('blur', function() {
+          this.style.transform = 'scale(1)';
+        });
+      });
+    });
+
+    const uiConfig = {
+      callbacks: {
+        signInSuccessWithAuthResult: function(authResult) {
+          const user = authResult.user;
+          document.getElementById('loading').style.display = 'none';
+          document.getElementById('firebaseui-auth-container').style.display = 'none';
+          document.getElementById('email').value = user.email || '';
+          document.getElementById('patientForm').style.display = 'block';
+          return false;
+        },
+        uiShown: function() {
+          document.getElementById('loading').style.display = 'none';
+        }
+      },
+      signInFlow: 'popup',
+      signInOptions: [
+        firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+        firebase.auth.EmailAuthProvider.PROVIDER_ID
+      ]
+    };
+
+    document.getElementById('patientForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      document.getElementById('loading').style.display = 'block';
+      document.getElementById('patientForm').style.display = 'none';
+
+      const name = document.getElementById('name').value.trim();
+      const phoneNumber = document.getElementById('phoneNumber').value.trim();
+      const guardianPhoneNumber = document.getElementById('guardianPhoneNumber').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const patientId = 'P' + Date.now().toString().slice(-8);
+      const uid = firebase.auth().currentUser?.uid || 'unknown';
+
+      try {
+        // LocalStorage save
+        localStorage.setItem('patientId', patientId);
+        localStorage.setItem('patientName', name);
+        localStorage.setItem('patientPhoneNumber', phoneNumber);
+        localStorage.setItem('patientGuardianPhoneNumber', guardianPhoneNumber);
+        localStorage.setItem('patientEmail', email);
+
+        console.log('[✔] localStorage saved:', {
+          patientId, name, phoneNumber, guardianPhoneNumber, email
+        });
+
+        await db.collection('patients').add({
+          name,
+          patientId,
+          phoneNumber,
+          guardianPhoneNumber,
+          email,
+          uid,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('successMessage').style.display = 'block';
+
+        setTimeout(() => {
+          const queryParams = new URLSearchParams({
+            patientId,
+            name,
+            phoneNumber,
+            guardianPhoneNumber,
+            email
+          }).toString();
+          
+          window.location.href = `http://127.0.0.1:5000?${queryParams}`;
+        }, 2000);
+
+      } catch (error) {
+        console.error('[❌ Error]', error);
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('patientForm').style.display = 'block';
+        document.getElementById('errorMessage').style.display = 'block';
+      }
+    });
+
+    auth.onAuthStateChanged(function(user) {
+      if (!uiStarted) {
+        if (user) {
+          document.getElementById('firebaseui-auth-container').style.display = 'none';
+          document.getElementById('email').value = user.email || '';
+          document.getElementById('patientForm').style.display = 'block';
+        } else {
+          ui.start('#firebaseui-auth-container', uiConfig);
+          uiStarted = true;
+        }
+      }
+    });
+  </script>
+
+</body>
+</html>
